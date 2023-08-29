@@ -90,18 +90,17 @@
         let para3 = document.querySelector("#pwError");
 
         if (nameInput.value == "" || nameInput.value == null) {
-          para1.textContent = "write your name";
+          para1.textContent = "Input your Name";
           para1.style.color = "red";
         }
         if (emailInput.value == "" || emailInput.value == null) {
-          para2.textContent = "write your email";
+          para2.textContent = "Input your Email";
           para2.style.color = "red";
         }
         if (pwInput.value == "" || pwInput.value == null) {
-          para3.textContent = "write your pw";
+          para3.textContent = "Enter your password";
           para3.style.color = "red";
-        } else {
-        }
+        } 
       }
 
       function saveForm() {
