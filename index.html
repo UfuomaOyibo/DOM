@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div {
+        height: 50vh;
+        width: 50vh;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+      form {
+        width: 95%;
+        margin: auto;
+      }
+      .input {
+        padding: 10px;
+        width: 80%;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <form
+        method="post"
+        id="myForm"
+        onsubmit="event.preventDefault(); formValidate(event, this)"
+      >
+        <input
+          type="text"
+          id="name"
+          class="input"
+          value=""
+          placeholder="Name"
+        />
+        <p class="error" id="nameError"></p>
+        <input
+          type="email"
+          id="email"
+          value=""
+          class="input"
+          placeholder="Email"
+        />
+        <p class="error" id="emailError"></p>
+
+        <input
+          type="password"
+          name="password"
+          id="password"
+          value=""
+          style="width: 60%; padding: 10px"
+          placeholder="Password"
+        /><button style="width: 20%; padding: 10px" onclick="showPassword()">
+          Show
+        </button>
+        <p class="error" id="pwError"></p>
+        <button
+          type="submit"
+          style="margin-top: 5px; padding: 5px"
+          onclick="saveForm()"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+
+    <script>
+      const showPassword = () => {
+        const passwordEntry = document.getElementById("password");
+        event.preventDefault();
+        passwordEntry.type =
+          passwordEntry.type === "password" ? "text" : "password";
+      };
+      const nameInput = document.querySelector("#name");
+      const emailInput = document.querySelector("#email");
+      const pwInput = document.querySelector("#password");
+
+      function formValidate(event, form) {
+        event.preventDefault();
+
+        let para1 = document.querySelector("#nameError");
+        let para2 = document.querySelector("#emailError");
+        let para3 = document.querySelector("#pwError");
+
+        if (nameInput.value == "" || nameInput.value == null) {
+          para1.textContent = "write your name";
+          para1.style.color = "red";
+        }
+        if (emailInput.value == "" || emailInput.value == null) {
+          para2.textContent = "write your email";
+          para2.style.color = "red";
+        }
+        if (pwInput.value == "" || pwInput.value == null) {
+          para3.textContent = "write your pw";
+          para3.style.color = "red";
+        } else {
+        }
+      }
+
+      function saveForm() {
+        if (localStorage) {
+          document
+            .getElementById("myForm")
+            .addEventListener("submit", function () {
+              let name = document.getElementById("name").value;
+              let email = document.getElementById("email").value;
+              let passWord = document.getElementById("password").value;
+
+              localStorage.setItem("name", name);
+              localStorage.setItem("email", email);
+              localStorage.setItem("password", passWord);
+
+              console.log(localStorage.getItem("name"));
+              console.log(localStorage.getItem("email"));
+              console.log(localStorage.getItem("passWord"));
+            });
+        }
+      }
+    </script>
+  </body>
+</html>
