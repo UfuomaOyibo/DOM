@@ -4,104 +4,146 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <style>
-      div {
-        height: 50vh;
-        width: 50vh;
-        margin: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-      }
-      form {
-        width: 95%;
-        margin: auto;
-      }
-      .input {
-        padding: 10px;
-        width: 80%;
-        margin-bottom: 10px;
-      }
-    </style>
+   <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div>
-      <form
-        method="post"
-        id="myForm"
-        onsubmit="event.preventDefault(); formValidate(event, this)"
-      >
-        <input
-          type="text"
-          id="name"
-          class="input"
-          value=""
-          placeholder="Name"
-        />
-        <p class="error" id="nameError"></p>
-        <input
-          type="email"
-          id="email"
-          value=""
-          class="input"
-          placeholder="Email"
-        />
-        <p class="error" id="emailError"></p>
+    <div class="custom-alert-container" id="alert">
+      <div class="custom-alert-message" id="alertMessage">
+        You have successfully submitted the form.
+      </div>
+      <button class="custom-alert-button" id="closeAlert">Close</button>
+    </div>
+    <div class="container">
 
-        <input
-          type="password"
-          name="password"
-          id="password"
-          value=""
-          style="width: 60%; padding: 10px"
-          placeholder="Password"
-        /><button style="width: 20%; padding: 10px" onclick="showPassword()">
-          Show
-        </button>
-        <p class="error" id="pwError"></p>
-        <button
-          type="submit"
-          style="margin-top: 5px; padding: 5px"
-          onclick="saveForm()"
-        >
-          Submit
-        </button>
+      <header>
+        <h1>Sign Up</h1>
+      </header>    
+      <form method="post" id="myForm" class="form" >
+        <div class="form-control">
+          <input
+            type="text"
+            id="name"
+      
+            value=""
+            placeholder="Name"
+          />
+          <small>Error Message</small>
+        </div>
+        <div class="form-control">
+          <input
+            type="email"
+            id="email"
+            value=""
+           
+            placeholder="Email"
+          />
+          <small>Error Message</small>
+        </div>
+        <div class="form-control">
+        
+            <input
+              type="password"
+              id="password"
+              value=""
+         
+              placeholder="Password"
+            />
+            <button class="show-button" onclick="showPassword()">Show</button>
+        
+          <small>Error Message</small>
+        </div>
+        <button type="submit" class="bottom">Submit</button>
       </form>
     </div>
 
     <script>
+      const form = document.querySelector("#myForm");
+      const alert = document.getElementById("alert");
+      const alertMessage = document.getElementById("alertMessage");
+      const alertBox = document.getElementById("closeAlert");
+
       const showPassword = () => {
         const passwordEntry = document.getElementById("password");
         event.preventDefault();
         passwordEntry.type =
           passwordEntry.type === "password" ? "text" : "password";
       };
+
+function showAlert () {
+
+  alert.style.display = 'Block'
+}
+
       const nameInput = document.querySelector("#name");
       const emailInput = document.querySelector("#email");
       const pwInput = document.querySelector("#password");
+ 
 
-      function formValidate(event, form) {
-        event.preventDefault();
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        handleInput();
+        saveForm();
+        
+      });
 
-        let para1 = document.querySelector("#nameError");
-        let para2 = document.querySelector("#emailError");
-        let para3 = document.querySelector("#pwError");
+      function handleInput() {
+        let nameValue = nameInput.value.trim();
+        let emailValue = emailInput.value.trim();
+        let passwordValue = pwInput.value.trim();
 
-        if (nameInput.value == "" || nameInput.value == null) {
-          para1.textContent = "Input your Name";
-          para1.style.color = "red";
+        if (nameValue === "") {
+          setErrorFor(nameInput, "Name cannot be blank");
+        } else {
+          setSuccessFor(nameInput);
         }
-        if (emailInput.value == "" || emailInput.value == null) {
-          para2.textContent = "Input your Email";
-          para2.style.color = "red";
+
+    
+        if (emailValue === "") {
+          setErrorFor(emailInput, "Email cannot be blank");
+        } else if (!isEmail(emailValue)) {
+          setErrorFor(emailInput, "Email is not valid");
+        } else {
+          setSuccessFor(emailInput);
         }
-        if (pwInput.value == "" || pwInput.value == null) {
-          para3.textContent = "Enter your password";
-          para3.style.color = "red";
-        } 
+
+    
+        if (passwordValue === "") {
+          setErrorFor(pwInput, "Password cannot be blank");
+        } else if (passwordValue.length < 6 || passwordValue.length > 30) {
+          setErrorFor(pwInput, "Password length should be between 6 and 30");
+        } else if(!isPwValid(passwordValue)){
+          setErrorFor(pwInput, "Password must contain at least a number, uppercase, lowercase and special character ")
+        }
+        else {
+          setSuccessFor(pwInput);
+        }
+        showAlert();
       }
+
+
+      function setErrorFor(input, message) {
+        let formControl = input.parentElement;
+        formControl.className = "form-control error";
+        let small = formControl.querySelector("small");
+        small.innerText = message;
+      }
+
+      function setSuccessFor(input) {
+        let formControl = input.parentElement;
+        formControl.className = "form-control success";
+      }
+
+      function isPwValid(pwInput) {
+        const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*_])(?=.{6,12}$)");
+        return regex.test(pwInput);
+      }
+
+      function isEmail(emailInput) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(emailInput).toLowerCase());
+      }
+
+    
 
       function saveForm() {
         if (localStorage) {
