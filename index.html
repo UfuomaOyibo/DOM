@@ -58,7 +58,7 @@
 
     <script>
       const form = document.querySelector("#myForm");
-      const alert = document.getElementById("alert");
+      // const alert = document.getElementById("alert");
       const alertMessage = document.getElementById("alertMessage");
       const alertBox = document.getElementById("closeAlert");
 
@@ -69,10 +69,10 @@
           passwordEntry.type === "password" ? "text" : "password";
       };
 
-function showAlert () {
+// function showAlert () {
 
-  alert.style.display = 'Block'
-}
+//   alert.style.display = 'Block'
+// }
 
       const nameInput = document.querySelector("#name");
       const emailInput = document.querySelector("#email");
@@ -81,9 +81,15 @@ function showAlert () {
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
-        handleInput();
+        if(handleInput){
+          alert('You have successfully submitted the form');
+        }else{
+          alert('Fill all input fields');
+        }
+        // handleInput();
+        // alert('You have successfully submitted the form');
         saveForm();
-        
+        form.reset();
       });
 
       function handleInput() {
@@ -116,8 +122,9 @@ function showAlert () {
         }
         else {
           setSuccessFor(pwInput);
-        }
-        showAlert();
+        };
+        // showAlert();
+     
       }
 
 
